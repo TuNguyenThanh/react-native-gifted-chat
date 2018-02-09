@@ -85,7 +85,6 @@ export default class InputToolbar extends React.Component {
   }
 
   render() {
-    console.log('onInputSizeChanged', this.props)
     const {composerHeight} = this.props
     return (
       <View
