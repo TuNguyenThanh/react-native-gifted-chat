@@ -83,7 +83,7 @@ const styles = {
   left: StyleSheet.create({
     container: {
       flexDirection: 'row',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'flex-start',
       marginLeft: 8,
       marginRight: 0,
@@ -92,7 +92,7 @@ const styles = {
   right: StyleSheet.create({
     container: {
       flexDirection: 'row',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       justifyContent: 'flex-end',
       marginLeft: 0,
       marginRight: 8,
