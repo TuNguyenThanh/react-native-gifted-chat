@@ -118,6 +118,19 @@ export default class Bubble extends React.Component {
     }
   }
 
+  renderSendStatus (isSend) {
+    if(this.props.currentMessage.isLastMessage) {
+      if(isSend) {
+        if(this.props.renderBubbleSent) {
+          return this.props.renderBubbleSent
+        }
+      }
+      if(this.props.renderBubbleSending) {
+        return this.props.renderBubbleSending
+      }
+    }
+  }
+
   render() {
     return (
       <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
@@ -138,8 +151,9 @@ export default class Bubble extends React.Component {
             </View>
           </TouchableWithoutFeedback>
         </View>
+        { this.renderSendStatus(this.props.currentMessage.isSend) }
       </View>
-    );
+    )
   }
 }
 
