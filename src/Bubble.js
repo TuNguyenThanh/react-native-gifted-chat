@@ -125,8 +125,17 @@ export default class Bubble extends React.Component {
           return this.props.renderBubbleSent
         }
       }
+
+      if(this.props.currentMessage.isError) {
+        return this.props.renderBubbleTryAgain
+      }
+
       if(this.props.renderBubbleSending) {
         return this.props.renderBubbleSending
+      }
+    } else {
+      if(this.props.currentMessage.isError) {
+        return this.props.renderBubbleError
       }
     }
   }
