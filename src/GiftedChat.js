@@ -258,7 +258,7 @@ class GiftedChat extends React.Component {
 
   onKeyboardWillShow(e) {
     this.setIsTypingDisabled(true);
-    this.setKeyboardHeight(e.endCoordinates ? (this.isIphoneX() ? e.endCoordinates.height : e.endCoordinates.height + 20) : e.end.height);
+    this.setKeyboardHeight(e.endCoordinates ? (this.isIphoneX() ? e.endCoordinates.height - 10 : e.endCoordinates.height + 10) : e.end.height);
     this.setBottomOffset(this.props.bottomOffset);
     const newMessagesContainerHeight = this.getMessagesContainerHeightWithKeyboard();
     if (this.props.isAnimated === true) {
