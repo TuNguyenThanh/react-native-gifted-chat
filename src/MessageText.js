@@ -6,19 +6,37 @@ import {
   Text,
   View,
   ViewPropTypes,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 
 import ParsedText from 'react-native-parsed-text';
 import Communications from 'react-native-communications';
+import LinkPreview from 'react-native-link-preview'
 
 const WWW_URL_PATTERN = /^www\./i;
 
 export default class MessageText extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      linkPreview: null
+    }
+
     this.onUrlPress = this.onUrlPress.bind(this);
     this.onPhonePress = this.onPhonePress.bind(this);
     this.onEmailPress = this.onEmailPress.bind(this);
+  }
+
+  async componentWillMount () {
+    await LinkPreview.getPreview(this.props.currentMessage.text).then(data => {
+      this.setState({
+        linkPreview: data
+      })
+    }).catch(error => {
+      console.log(error)
+    })
   }
 
   onUrlPress(url) {
@@ -27,13 +45,15 @@ export default class MessageText extends React.Component {
     if (WWW_URL_PATTERN.test(url)) {
       this.onUrlPress(`http://${url}`);
     } else {
-      Linking.canOpenURL(url).then((supported) => {
-        if (!supported) {
-          console.error('No handler for URL:', url);
-        } else {
-          Linking.openURL(url);
-        }
-      });
+      const onPress = this.props.onPressLinkPreview
+      typeof onPress === 'function' && onPress(this.state.linkPreview)
+      // Linking.canOpenURL(url).then((supported) => {
+      //   if (!supported) {
+      //     console.error('No handler for URL:', url);
+      //   } else {
+      //     Linking.openURL(url);
+      //   }
+      // });
     }
   }
 
@@ -66,12 +86,12 @@ export default class MessageText extends React.Component {
 
   render() {
     const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]]);
+    const { linkPreview } = this.state
     return (
       <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
         <ParsedText
           style={[styles[this.props.position].text, this.props.textStyle[this.props.position], this.props.customTextStyle]}
           parse={[
-            ...this.props.parsePatterns(linkStyle),
             {type: 'url', style: linkStyle, onPress: this.onUrlPress},
             {type: 'phone', style: linkStyle, onPress: this.onPhonePress},
             {type: 'email', style: linkStyle, onPress: this.onEmailPress},
@@ -80,6 +100,25 @@ export default class MessageText extends React.Component {
         >
           {this.props.currentMessage.text}
         </ParsedText>
+        {
+          linkPreview &&
+          <TouchableOpacity
+            style={styles.wrapLinkPreviewStyle}
+            onPress={() => {
+              const onPress = this.props.onPressLinkPreview
+              typeof onPress === 'function' && onPress(linkPreview)
+            }}
+          >
+            <Image
+              style={{ width: null, height: 100 }}
+              source={{uri: linkPreview.images[0]}}
+            />
+            <View style={styles.wrapTitleViewStyle}>
+              <Text style={this.props.titleLinkPreViewStyle} numberOfLines={1}>{linkPreview.title}</Text>
+              <Text style={this.props.urlLinkPreviewStyle} numberOfLines={1}>{linkPreview.url}</Text>
+            </View>
+          </TouchableOpacity>
+        }
       </View>
     );
   }
@@ -94,7 +133,20 @@ const textStyle = {
   marginRight: 10,
 };
 
+const borderRadiusStyle = 16
 const styles = {
+  wrapLinkPreviewStyle: {
+    margin: -10,
+    marginTop: 0,
+    borderBottomLeftRadius: borderRadiusStyle,
+    borderBottomRightRadius: borderRadiusStyle
+  },
+  wrapTitleViewStyle: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderBottomLeftRadius: borderRadiusStyle, 
+    borderBottomRightRadius: borderRadiusStyle
+  },
   left: StyleSheet.create({
     container: {
     },
@@ -155,3 +207,4 @@ MessageText.propTypes = {
   textProps: PropTypes.object,
   customTextStyle: Text.propTypes.style,
 };
+
