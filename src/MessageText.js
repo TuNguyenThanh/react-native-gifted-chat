@@ -27,6 +27,7 @@ export default class MessageText extends React.Component {
     this.onUrlPress = this.onUrlPress.bind(this);
     this.onPhonePress = this.onPhonePress.bind(this);
     this.onEmailPress = this.onEmailPress.bind(this);
+    this.onHashTagPress = this.onHashTagPress.bind(this);
   }
 
   async componentWillMount () {
@@ -35,8 +36,13 @@ export default class MessageText extends React.Component {
         linkPreview: data
       })
     }).catch(error => {
-      console.log(error)
+      // console.log(error)
     })
+  }
+
+  onHashTagPress (hashTag) {
+    const onPress = this.props.onPressHashTag
+    typeof onPress === 'function' && onPress(hashTag)
   }
 
   onUrlPress(url) {
@@ -85,16 +91,22 @@ export default class MessageText extends React.Component {
   }
 
   render() {
-    const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]]);
+    const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]])
+    const { hashTagStyle } = this.props
     const { linkPreview } = this.state
     return (
       <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
+        {
+          this.props.currentMessage.post && this.props.currentMessage.post.hashTags && this.props.renderTag &&
+          this.props.renderTag
+        }
         <ParsedText
           style={[styles[this.props.position].text, this.props.textStyle[this.props.position], this.props.customTextStyle]}
           parse={[
             {type: 'url', style: linkStyle, onPress: this.onUrlPress},
             {type: 'phone', style: linkStyle, onPress: this.onPhonePress},
             {type: 'email', style: linkStyle, onPress: this.onEmailPress},
+            {pattern: /#(\w+)/, style: hashTagStyle, onPress: this.onHashTagPress}
           ]}
           childrenProps={{...this.props.textProps}}
         >
@@ -144,7 +156,7 @@ const styles = {
   wrapTitleViewStyle: {
     padding: 10,
     backgroundColor: 'white',
-    borderBottomLeftRadius: borderRadiusStyle, 
+    borderBottomLeftRadius: borderRadiusStyle,
     borderBottomRightRadius: borderRadiusStyle
   },
   left: StyleSheet.create({
@@ -207,4 +219,3 @@ MessageText.propTypes = {
   textProps: PropTypes.object,
   customTextStyle: Text.propTypes.style,
 };
-
