@@ -31,7 +31,8 @@ export default class MessageText extends React.Component {
   }
 
   async componentWillMount () {
-    await LinkPreview.getPreview(this.props.currentMessage.text).then(data => {
+    await LinkPreview.getPreview(this.props.currentMessage.text.replace(/\n/g, ' ')).then(data => {
+      console.log(data)
       this.setState({
         linkPreview: data
       })
