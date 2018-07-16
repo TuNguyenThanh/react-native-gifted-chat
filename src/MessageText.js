@@ -93,8 +93,27 @@ export default class MessageText extends React.Component {
 
   render() {
     const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]])
-    const { hashTagStyle } = this.props
+    const { hashTagStyle, currentMessage, onPressMessageOrder } = this.props
     const { linkPreview } = this.state
+    const isReferenceOrder = !!currentMessage.reference
+
+    if (isReferenceOrder) {
+      return (
+        <TouchableOpacity
+          style={[styles[this.props.position].container, this.props.containerStyle[this.props.position], { flexDirection: 'row' }]}
+          onPress={() => {
+            const onPress = this.props.onPressMessageOrder
+            typeof onPress === 'function' && onPress(currentMessage.reference)
+          }}
+        >
+          <Text style={[styles[this.props.position].text, this.props.textStyle[this.props.position], this.props.customTextStyle]}>
+            {this.props.currentMessage.text}
+          </Text>
+          {this.props.renderIconRight}
+        </TouchableOpacity>
+      )
+    }
+
     return (
       <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
         {
