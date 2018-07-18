@@ -97,7 +97,7 @@ export default class MessageText extends React.Component {
     const { linkPreview } = this.state
     const isReferenceOrder = !!currentMessage.reference
 
-    if (isReferenceOrder) {
+    if (isReferenceOrder && currentMessage.reference.type === 'SYSTEM' && currentMessage.reference.state === 'ORDER_REFERENCE') {
       return (
         <TouchableOpacity
           style={[styles[this.props.position].container, this.props.containerStyle[this.props.position], { flexDirection: 'row' }]}
