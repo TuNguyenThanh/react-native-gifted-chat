@@ -60,19 +60,24 @@ export default class Message extends React.Component {
     if (currentMessage.user.avatar === null) {
       return null;
     }
-    return <View style={styles.wrapAvatar}><Avatar {...avatarProps} /></View>
+    return (
+      <View style={styles.wrapAvatar}>
+        <Avatar {...avatarProps} />
+      </View>
+    )
   }
 
   render() {
     return (
       <View>
         {this.renderDay()}
+        {this.props.position === "left" ? this.renderAvatar() : null}
+        {this.props.position === "right" ? this.renderAvatar() : null}
+
         {this.props.currentMessage.system ?
           this.renderSystemMessage() :
           <View style={[styles[this.props.position].container, { marginBottom: isSameUser(this.props.currentMessage, this.props.nextMessage) ? 2 : 10 }, this.props.containerStyle[this.props.position]]}>
-            {this.props.position === "left" ? this.renderAvatar() : null}
             {this.renderBubble()}
-            {this.props.position === "right" ? this.renderAvatar() : null}
           </View>}
       </View>
     );
@@ -84,18 +89,18 @@ const styles = {
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      // justifyContent: 'flex-start',
       marginLeft: 8,
-      marginRight: 0,
+      marginRight: 20
     },
   }),
   right: StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-end',
-      marginLeft: 0,
-      marginRight: 8,
+      // justifyContent: 'flex-end',
+      // marginLeft: 0,
+      marginRight: 20
     },
   }),
   wrapAvatar: {
