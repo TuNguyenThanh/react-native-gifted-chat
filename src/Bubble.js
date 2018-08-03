@@ -160,22 +160,28 @@ export default class Bubble extends React.Component {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        { this.renderSendStatus(this.props.currentMessage.isSend) }
+        <View style={styles.wrapStatusStyles}>
+          { this.renderSendStatus(this.props.currentMessage.isSend) }
+        </View>
       </View>
     )
   }
 }
 
 const styles = {
+  wrapStatusStyles: {
+    marginLeft: 20
+  },
   left: StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'flex-start',
+      // alignItems: 'flex-start',
     },
     wrapper: {
       borderRadius: 15,
       backgroundColor: '#f0f0f0',
       marginRight: 60,
+      marginLeft: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
     },
@@ -189,12 +195,12 @@ const styles = {
   right: StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'flex-end',
+      // alignItems: 'flex-end',
     },
     wrapper: {
       borderRadius: 15,
       backgroundColor: '#0084ff',
-      marginLeft: 60,
+      marginLeft: 20,
       minHeight: 20,
       justifyContent: 'flex-end',
     },
