@@ -180,7 +180,7 @@ const styles = {
     wrapper: {
       borderRadius: 15,
       backgroundColor: '#f0f0f0',
-      marginRight: 60,
+      // marginRight: 60,
       marginLeft: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
