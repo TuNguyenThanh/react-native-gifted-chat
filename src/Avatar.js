@@ -13,6 +13,8 @@ export default class Avatar extends React.Component {
     return (
       <GiftedAvatar
         avatarStyle={StyleSheet.flatten([styles[this.props.position].image, this.props.imageStyle[this.props.position]])}
+        avatarNameStyle={StyleSheet.flatten(this.props.avatarNameStyle)}
+        renderPremium={this.props.renderPremium}
         user={this.props.currentMessage.user}
         onPress={() => this.props.onPressAvatar && this.props.onPressAvatar(this.props.currentMessage.user)}
       />
@@ -23,17 +25,17 @@ export default class Avatar extends React.Component {
     const renderAvatarOnTop = this.props.renderAvatarOnTop;
     const messageToCompare = renderAvatarOnTop ? this.props.previousMessage : this.props.nextMessage;
     const computedStyle = renderAvatarOnTop ? "onTop" : "onBottom"
-
     if (this.props.renderAvatar === null) {
       return null
     }
-
     if (isSameUser(this.props.currentMessage, messageToCompare) && isSameDay(this.props.currentMessage, messageToCompare)) {
       return (
         <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
-          <GiftedAvatar
+          {/*<GiftedAvatar
             avatarStyle={StyleSheet.flatten([styles[this.props.position].image, this.props.imageStyle[this.props.position]])}
-          />
+            avatarNameStyle={StyleSheet.flatten(this.props.avatarNameStyle)}
+            renderPremium={this.props.renderPremium}
+          />*/}
         </View>
       );
     }
@@ -57,23 +59,23 @@ const styles = {
     },
     onBottom: {},
     image: {
-      height: 30,
-      width: 30,
-      borderRadius: 15,
+      height: 40,
+      width: 40,
+      borderRadius: 20,
     },
   }),
   right: StyleSheet.create({
     container: {
-      marginLeft: 8,
+      // marginLeft: 8,
     },
     onTop: {
       alignSelf: "flex-start"
     },
     onBottom: {},
     image: {
-      height: 30,
-      width: 30,
-      borderRadius: 15,
+      height: 40,
+      width: 40,
+      borderRadius: 20,
     },
   }),
 };
