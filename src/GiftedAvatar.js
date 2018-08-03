@@ -51,10 +51,16 @@ export default class GiftedAvatar extends React.Component {
       return this.props.user.avatar();
     } else if (typeof this.props.user.avatar === 'string') {
       return (
-        <Image
-          source={{uri: this.props.user.avatar}}
-          style={[defaultStyles.avatarStyle, this.props.avatarStyle]}
-        />
+        <View style={defaultStyles.wrapAvatarNameStyle}>
+          <Image
+            source={{uri: this.props.user.avatar}}
+            style={[defaultStyles.avatarStyle, this.props.avatarStyle]}
+          />
+          {
+            this.props.renderPremium
+          }
+          <Text style={[defaultStyles.textNameStyle, this.props.avatarNameStyle]}>{this.props.user.name}</Text>
+        </View>
       );
     } else if (typeof this.props.user.avatar === 'number') {
       return (
@@ -129,6 +135,16 @@ export default class GiftedAvatar extends React.Component {
 }
 
 const defaultStyles = {
+  wrapAvatarNameStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 10
+  },
+  textNameStyle: {
+    marginLeft: 5
+  },
   avatarStyle: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -151,6 +167,7 @@ GiftedAvatar.defaultProps = {
   },
   onPress: null,
   avatarStyle: {},
+  avatarNameStyle: {},
   textStyle: {},
 };
 
@@ -158,5 +175,6 @@ GiftedAvatar.propTypes = {
   user: PropTypes.object,
   onPress: PropTypes.func,
   avatarStyle: Image.propTypes.style,
+  avatarNameStyle: Text.propTypes.style,
   textStyle: Text.propTypes.style,
 };
